@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragment::header"></th:block>
+    <title>Document</title>
+</head>
+<body>
+    <h1 th:text="${message}">Add User</h1>
+
+
+    <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+        <table class="w-full text-sm text-left rtl:text-right text-body">
+            <thead class="bg-neutral-secondary-soft border-b border-default">
+            <tr>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Id
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Username
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Password
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Email
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Action
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user:${users}" class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                    <th  th:text="${user.id}" scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+
+                    </th>
+                    <td th:text="${user.username}" class="px-6 py-4">
+
+                    </td>
+                    <td th:text="${user.password}" class="px-6 py-4">
+
+                    </td>
+                    <td th:text="${user.email}" class="px-6 py-4">
+
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragment::header"></th:block>
+    <title>Document</title>
+</head>
+<body>
+<h1>User Page</h1>
+
+<div>
+    <form th:action="@{/user/add}" th:object="${user}" method="post">
+        <input placeholder="Username" type="text" th:field="*{username}">
+        <input placeholder="Password" type="text" th:field="*{password}">
+        <input placeholder="Email" type="text" th:field="*{email}">
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+</body>
+
+</html>
