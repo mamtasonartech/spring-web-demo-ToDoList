@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,12 +48,13 @@ public class UserAPI {
             )
     })
 
-    public ResponseEntity<?> getUser(){
+    public ResponseEntity<?> getUser(@RequestHeader("User-Agent") String userAgent){
         List<User> allUsers = userService.getAllUser();
+        System.out.println("User-Agent:" + userAgent + "");
         if(allUsers.isEmpty()) {
             return ResponseEntity.status(HttpStatus. NOT_FOUND).body(
-                    Error.builder().code("NOT-FOUND 404").message(
-                            "Not users found").build()
+                    Error.builder().code("NOT-FOUND 404").message(!userAgent.toUpperCase().contains("POSTMAN") ?
+                            "No users found" : "No users  found for POSTMAN").build()
 
             );
         }
