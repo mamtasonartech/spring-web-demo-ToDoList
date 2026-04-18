@@ -52,7 +52,7 @@ public class UserAPI {
         if(allUsers.isEmpty()) {
             return ResponseEntity.status(HttpStatus. NOT_FOUND).body(
                     Error.builder().code("NOT-FOUND 404").message(
-                            "Not found Addrs").build()
+                            "Not users found").build()
 
             );
         }
