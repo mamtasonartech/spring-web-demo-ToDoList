@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+
 @RestController
 public class UserAPI {
     private final UserService userService;
@@ -87,6 +88,32 @@ public class UserAPI {
         return ResponseEntity.status(HttpStatus.OK).body(Error.builder().code("NOT FOUND").message("Files Not Found"));
     }
 
+
+    @PostMapping("/api/users")
+    @Operation(summary = "Create a new user",description = "Creates new user in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)
+                    ),
+                    description = "User created succesfully"),
+
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User Object is to be created",required = true,
+        content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = User.class)
+        )
+
+    )
+
+    public ResponseEntity<?> createUser(
+            @RequestBody User user){
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+
+    }
 
 
 
