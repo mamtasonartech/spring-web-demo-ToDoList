@@ -57,9 +57,13 @@ public class UserAPI {
     //        }
     //    }
 
-    public ResponseEntity<?> getUser(@RequestHeader("User-Agent") String userAgent){
+    public ResponseEntity<?> getUser(@RequestHeader(value = "User-Agent",required = false) String userAgent,
+        @RequestParam(value = "firstname",required = false) String firstname,
+                                     @RequestParam(value ="lastname",required = false) String lastname
+                                     ){
         List<User> allUsers = userService.getAllUser();
         System.out.println("User-Agent:" + userAgent + "");
+        System.out.println("firstname: " + firstname + " " + "lastname:" +lastname);
         if(allUsers.isEmpty()) {
             return ResponseEntity.status(HttpStatus. NOT_FOUND).header("X-RESPONDER","PRAGRA").body(
                     Error.builder().code("NOT-FOUND 404").message(!userAgent.toUpperCase().contains("POSTMAN") ?
