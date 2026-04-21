@@ -1,6 +1,7 @@
 package com.mamta.springwebdemo.service;
 
 import com.mamta.springwebdemo.entity.User;
+import com.mamta.springwebdemo.exception.UserNotFoundException;
 import com.mamta.springwebdemo.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,11 @@ public class UserService {
         return userRepo.findAll();
     }
 
-//    public User getUserById(Long id){
-//        Optional<User> byId =userRepo.findById(id);
-//        byId.orElseThrow(()->new UserNotFoundException("User not found with id:" +id));
-//        return user;
-//    }
+    public User getUserById(Long id){
+        Optional<User> byId =userRepo.findById(id);
+        User user = byId.orElseThrow(() -> new UserNotFoundException("User not found with id:" + id));
+        return user;
+    }
 
 
 }

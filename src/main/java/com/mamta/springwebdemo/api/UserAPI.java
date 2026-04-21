@@ -2,6 +2,7 @@ package com.mamta.springwebdemo.api;
 
 import com.mamta.springwebdemo.entity.Error;
 import com.mamta.springwebdemo.entity.User;
+import com.mamta.springwebdemo.exception.UserNotFoundException;
 import com.mamta.springwebdemo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -50,13 +51,6 @@ public class UserAPI {
                     )
             )
     })
-
-    //    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET,consumes = {"application/json","application/xml"}, produces = "application/json")
-    //    public ResponseEntity<?> getUserById(@PathVariable("id")Long id){
-    //        try{
-    //            User
-    //        }
-    //    }
 
     public ResponseEntity<?> getUser(@RequestHeader(value = "User-Agent",required = false) String userAgent,
         @RequestParam(value = "firstname",required = false) String firstname,
@@ -115,6 +109,39 @@ public class UserAPI {
 
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)
+            )),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class)
+            )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(
+                             mediaType = "application/json",
+                             schema = @Schema(implementation = Error.class)
+            )),
+    })
+
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET,consumes = {"application/json","application/xml"}, produces = "application/json")
+    public ResponseEntity<?> getUserById(@PathVariable("id")Long id) {
+//        if(id == null || id <0){
+//            throw new IllegalArgumentException("Invalid user Id provided");
+//        }
+        try {
+            User userById = userService.getUserById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(userById);
+        }
+        catch(UserNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    Error.builder().code("NOT-FOUND-404").message(e.getMessage()).build()
+            );
+        }
+    }
 
 
 }
