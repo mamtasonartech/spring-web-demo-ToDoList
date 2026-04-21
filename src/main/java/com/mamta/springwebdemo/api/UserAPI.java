@@ -8,13 +8,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -48,18 +50,40 @@ public class UserAPI {
             )
     })
 
+    //    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET,consumes = {"application/json","application/xml"}, produces = "application/json")
+    //    public ResponseEntity<?> getUserById(@PathVariable("id")Long id){
+    //        try{
+    //            User
+    //        }
+    //    }
+
     public ResponseEntity<?> getUser(@RequestHeader("User-Agent") String userAgent){
         List<User> allUsers = userService.getAllUser();
         System.out.println("User-Agent:" + userAgent + "");
         if(allUsers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus. NOT_FOUND).body(
+            return ResponseEntity.status(HttpStatus. NOT_FOUND).header("X-RESPONDER","PRAGRA").body(
                     Error.builder().code("NOT-FOUND 404").message(!userAgent.toUpperCase().contains("POSTMAN") ?
                             "No users found" : "No users  found for POSTMAN").build()
 
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(allUsers);
-
-
     }
+
+    @GetMapping("/api/download")
+    public ResponseEntity<?> downloadDoc(){
+        try{
+            byte[] bytes = Files.readAllBytes(Paths.get("D:/Java/Pragra/Notes/rest_api.pdf"));
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=rest_api.pdf")
+                    .body(bytes);
+        } catch (IOException e) {
+            System.out.println("e.getMessage()" + e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Error.builder().code("NOT FOUND").message("Files Not Found"));
+    }
+
+
+
+
 }

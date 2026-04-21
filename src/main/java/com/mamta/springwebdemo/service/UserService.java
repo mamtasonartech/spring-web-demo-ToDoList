@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,6 +25,12 @@ public class UserService {
     public List<User> getAllUser(){
         return userRepo.findAll();
     }
+
+//    public User getUserById(Long id){
+//        Optional<User> byId =userRepo.findById(id);
+//        byId.orElseThrow(()->new UserNotFoundException("User not found with id:" +id));
+//        return user;
+//    }
 
 
 }
