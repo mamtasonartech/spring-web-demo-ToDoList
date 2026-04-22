@@ -28,8 +28,11 @@ public class UserService {
     }
 
     public User getUserById(Long id){
+        if(id == null || id <0){
+            throw new IllegalArgumentException("Invalid user Id provided");
+        }
         Optional<User> byId =userRepo.findById(id);
-        User user = byId.orElseThrow(() -> new UserNotFoundException("User not found with id:" + id));
+        User user = byId.orElseThrow(() -> new  UserNotFoundException("User not found with id:" + id));
         return user;
     }
 

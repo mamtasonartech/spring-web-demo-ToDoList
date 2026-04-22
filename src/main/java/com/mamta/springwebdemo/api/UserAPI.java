@@ -129,19 +129,7 @@ public class UserAPI {
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET,consumes = {"application/json","application/xml"}, produces = "application/json")
     public ResponseEntity<?> getUserById(@PathVariable("id")Long id) {
-//        if(id == null || id <0){
-//            throw new IllegalArgumentException("Invalid user Id provided");
-//        }
-        try {
-            User userById = userService.getUserById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(userById);
-        }
-        catch(UserNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Error.builder().code("NOT-FOUND-404").message(e.getMessage()).build()
-            );
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id ));
     }
-
 
 }
